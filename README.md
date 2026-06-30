@@ -53,7 +53,7 @@ Automatically turns a messy e-commerce CSV into a cleaned dataset, key business 
 | `app.py` | Hugging Face Space backend — CSV cleaning and metric generation |
 | `n8n_workflow.json` | Exportable n8n workflow (import directly into any n8n instance) |
 | `workflow-stru.png` | Visual map of the n8n node sequence |
-| `demo.mp4` | 45-second walkthrough of the full pipeline |
+| `demo.mp4` | 25-second walkthrough of the full pipeline |
 | `requirements.txt` | Python dependencies for the Space |
 | `Dockerfile` | Container config used by Hugging Face |
 
