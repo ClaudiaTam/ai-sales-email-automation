@@ -1,114 +1,74 @@
-# Simple AI Data Analyst & Email Report Automation
+# AI Sales Report Automation
 
-This project turns a messy e‑commerce sales CSV into a cleaned dataset, key business metrics, and a short AI-written action plan, then emails the results to non‑technical stakeholders automatically.
+Automatically turns a messy e-commerce CSV into a cleaned dataset, key business metrics, and an AI-written action plan — then emails an HTML dashboard to stakeholders.
 
-Built with:
-- n8n (workflow orchestration, AI call, email delivery)
-- Hugging Face Spaces (Python cleaning API host)
-- Python (data cleaning & metric calculation)
-- Gmail (email sending)
-- Google Gemini Chat Model (AI text summary)
+> Built with n8n · Hugging Face Spaces · Python · Google Gemini · Gmail
 
 ---
 
 ## Demo
 
-- **45‑second walkthrough:** shows the full flow from CSV upload to email dashboard.
-- Recommended placement:
-  - If hosted: add the link here (YouTube / Hugging Face / GitHub).
-  - If stored in this repo: `demo/demo.mp4`.
-
-The demo makes it easy for recruiters to understand the end‑to‑end behavior without reading code.
+📹 [Watch the 45-second walkthrough](demo.mp4) — CSV upload → cleaned data → email dashboard delivered.
 
 ---
 
-## What the workflow does
+## How It Works
 
-1. **Upload a messy CSV**
-   - A business user uploads an e‑commerce sales CSV via an n8n Form Trigger.
-
-2. **Clean and calculate in Hugging Face**
-   - n8n sends the file to a Python API hosted on Hugging Face Spaces.
-   - The script:
-     - trims white spaces
-     - handles missing values
-     - isolates corrupted rows
-     - tracks revenue lost in `Cancelled` / `Returned` orders
-     - computes totals and core KPIs.
-
-3. **Generate AI consultant insights**
-   - An AI step takes the metrics and writes a short, 3‑sentence action plan:
-     - leak health check
-     - inventory/marketing directive for the top product line
-     - 24‑hour execution mandate for the sales team.
-
-4. **Send an email dashboard**
-   - A Code node formats the numbers and AI text into a simple HTML scorecard.
-   - The Gmail node sends the dashboard email to the stakeholder.
+| Step | What happens |
+|------|--------------|
+| 1. Upload | Business user submits a messy CSV via n8n Form Trigger |
+| 2. Clean | n8n sends the file to a Python API on Hugging Face Spaces — trims whitespace, handles nulls, isolates corrupted rows, tracks cancelled/returned revenue |
+| 3. Insights | Google Gemini turns the metrics into a 3-sentence business action plan (plain English, no jargon) |
+| 4. Email | A JavaScript node builds an HTML scorecard; Gmail node sends it to the stakeholder |
 
 ---
 
-## n8n workflow structure
+## n8n Workflow Structure
 
-This is the end‑to‑end node sequence you designed (also visible in `n8n_workflow.json`):
+![n8n workflow](workflow-stru.png)
 
-1. **On form submission (Form Trigger)**  
-   - Input: CSV file uploaded by the user.  
-   - Role: starts the workflow whenever a new file is submitted.
-
-2. **HTTP Request (Hugging Face API)**  
-   - Method: `POST` to `https://claudiadec2-eda-cleaner-api.hf.space/analyze`.  
-   - Role: sends the CSV to the Python backend and returns cleaned metrics as JSON.
-
-3. **AI Agent (Google Gemini Chat Model)**  
-   - Role: converts raw metrics into a structured 3‑sentence business recommendation.  
-   - Guardrails: no technical database terms, consultant tone only.
-
-4. **Code in JavaScript (HTML formatter)**  
-   - Role: builds a minimal HTML email with KPI cards, an AI insight box, and a top‑products table.
-
-5. **Send a message (Gmail)**  
-   - Role: emails the HTML report to the stakeholder’s inbox.
-
-The visual n8n canvas (Form → HTTP Request → AI Agent → Code → Gmail) demonstrates clear orchestration, external API integration, AI usage, and presentation logic in one flow.
+| Node | Role |
+|------|------|
+| Form Trigger | Receives the uploaded CSV from the business user |
+| HTTP Request | POSTs file to Hugging Face API → returns cleaned metrics JSON |
+| AI Agent (Gemini) | Generates a 3-sentence consultant-style recommendation |
+| Code (JavaScript) | Builds the HTML email: KPI cards + AI insight + top products table |
+| Gmail | Sends the final HTML report to the stakeholder |
 
 ---
 
-## Key business features
+## Key Business Outputs
 
-- **Financial snapshot**
-  - Gross revenue, average order value (AOV), and total transaction count.
-
-- **Leakage tracker**
-  - Money lost or at risk due to `Cancelled` / `Returned` orders.
-
-- **Top product lines**
-  - Ranks the 3 highest‑revenue product codes from the uploaded CSV.
-
-- **Non‑technical copy**
-  - AI text is forced to sound like a corporate consultant and avoid database jargon.
+- **Financial snapshot** — gross revenue, average order value (AOV), total transactions
+- **Leakage tracker** — revenue lost to cancelled or returned orders
+- **Top 3 product lines** — ranked by revenue from the uploaded CSV
+- **Plain-English insights** — consultant-tone copy, no technical jargon
 
 ---
 
-## Files in this repo
+## Files in This Repo
 
-- `README.md` – project overview for recruiters and reviewers.
-- `app.py` – Hugging Face Space backend for CSV cleaning and metric generation.
-- `requirements.txt` – Python dependencies for the Space.
-- `Dockerfile` – container setup used by Hugging Face.
-- `n8n_workflow.json` – exportable n8n workflow (Form → HF API → AI → Email).
-- `demo/demo.mp4` (optional) – short video demo of the full pipeline.
+| File | Description |
+|------|-------------|
+| `app.py` | Hugging Face Space backend — CSV cleaning and metric generation |
+| `n8n_workflow.json` | Exportable n8n workflow (import directly into any n8n instance) |
+| `workflow-stru.png` | Visual map of the n8n node sequence |
+| `demo.mp4` | 45-second walkthrough of the full pipeline |
+| `requirements.txt` | Python dependencies for the Space |
+| `Dockerfile` | Container config used by Hugging Face |
 
 ---
 
-## How to run a quick demo
+## Quick Start
 
 1. Import `n8n_workflow.json` into your n8n instance.
-2. Configure credentials:
-   - Hugging Face API URL
-   - Gmail
-   - Google Gemini API / LLM key
-3. Open the Form Trigger URL and upload a sample messy CSV.
-4. Wait for the workflow to complete and check your inbox for the HTML dashboard email.
+2. Add credentials: Hugging Face API URL, Gmail, Google Gemini API key.
+3. Open the Form Trigger URL and upload a messy sales CSV.
+4. Check your inbox for the HTML dashboard email.
 
-This project is designed as a portfolio piece to show end‑to‑end automation for sales reporting: from raw CSV to AI‑assisted email summary, using n8n and Hugging Face Spaces together.
+---
+
+## Live API
+
+The cleaning backend is hosted on Hugging Face Spaces:
+`https://claudiadec2-eda-cleaner-api.hf.space/analyze`
