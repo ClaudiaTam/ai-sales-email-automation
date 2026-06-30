@@ -8,7 +8,7 @@ Automatically turns a messy e-commerce CSV into a cleaned dataset, key business 
 
 ## Demo
 
-📹 [Watch the 25-second walkthrough](demo.mp4) — CSV upload → cleaned data → email dashboard delivered.
+📹 [Watch the 25-second walkthrough](https://drive.google.com/file/d/1XNKpLm3cyjeFWT4o9KSlHb4geAxdeMmM/view?usp=sharing) — CSV upload → cleaned data → email dashboard delivered.
 
 ---
 
